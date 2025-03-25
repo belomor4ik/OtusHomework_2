@@ -4,12 +4,20 @@ from model.contact_class import Contact
 
 class Phonebook:
 
+
     filename = './phonebook.csv'
+
     def __init__(self):
+        '''
+        Конструктуктор класса. До открытия телефонной книги функцией open_phonebook объект данного класса -пустой.
+        '''
         self.contacts = []
 
-
     def open_phonebook(self):
+        '''
+        Функция открытия телефонного справочника.
+        Считываем строки файла. Если файл пустой, возвращаем пустой список.
+        '''
         try:
             with open(self.filename, 'r', encoding='UTF-8', newline='') as file:
                 reader = file.readlines()
@@ -19,8 +27,10 @@ class Phonebook:
             self.contacts = []
         return self.contacts
 
-
     def save_phonebook(self):
+        '''
+        Сохраняем телефонный справочник и перезаписываем старые записи.
+        '''
         if self.contacts:
             with open(self.filename, 'w', encoding='UTF-8', newline='') as file:
                 for contact in self.contacts:
@@ -29,18 +39,19 @@ class Phonebook:
         else:
             return True
 
-
     def add_contact(self):
-
+        '''
+        Функция добавления строки с новым контактом. Контакт добавляется в конец списка.
+        '''
         contact = Contact()
         id_contact = len(self.contacts)
         self.contacts.append(f'{id_contact+1};{contact.name};{contact.number};{contact.comment}'.split(';'))
         return self.contacts
 
-
     def show_contacts(self):
-
-        """  Вывести всех пользователей """
+        '''
+        Вывести всех пользователей
+        '''
         if self.contacts:
             print(f'Список пользователей:\n ------------------')
             for contact in self.contacts:
@@ -49,10 +60,12 @@ class Phonebook:
             print(f'Телефонный справочник пока что пустой.')
         return True
 
-
     def find_contact(self, id = None):
-
-        if not id: #Запускаем поиск по текстовым полям, а не по ID
+        '''
+        Найти интересующий нас контакт по ID или по значению в одном из полей контакта.
+        '''
+        if not id:
+            #Запуск поиска по текстовым полям
             text = input('Введите текст для поиска: ')
             _is_finded = False
             for contact in self.contacts:
@@ -66,7 +79,9 @@ class Phonebook:
                 else:
                     print('Совпадений не найдено')
                     return False
-        else: # В случае, если в функцию в качестве аргумента подан ID, определяем его существование в файле
+
+        else:
+            #Запуск поиска по ID. В случае, если ID найден - возвращается True
             for contact in self.contacts:
                 if id == int(contact[0]):
                     print(
@@ -76,10 +91,12 @@ class Phonebook:
                 print('Пользователя с таким ID не существует')
                 return False
 
-
     def change_contact(self):
-
-        while True:
+        '''
+        Изменить один из контактов
+        '''
+        idx = 0
+        while idx == 0:
             try:
                 idx = int(input('Введите ID контакта, который Вы хотите изменить: '))
                 if type(idx) is int:
@@ -100,9 +117,10 @@ class Phonebook:
             print('Контакт не найден')
             return False
 
-
     def delete_contact(self):
-
+        '''
+        Удалить контакт по его ID
+        '''
         idx = int(input('Введите ID контакта, который Вы хотите удалить: '))
         if self.find_contact(idx):
             new_contacts = []

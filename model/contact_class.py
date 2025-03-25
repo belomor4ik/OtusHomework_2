@@ -1,9 +1,20 @@
 # contact_class.py
 
 class Contact:
+    '''
+    Это класс - контакт
+    '''
+
 
     def __init__(self):
-        while True:
+        '''
+        Эта функция позволяет задать имя, номер телефона и комментарий нового контакта.
+        Имя не может содержать какие-либо знаки, кроме букв.
+        Номер телефона может состоять только из цифр.
+        Комментарий может быть произвольным.
+        '''
+        self.name = False
+        while not self.name:
             try:
                 self.name = input('Введите имя: ')
                 if not self.name.isalpha():
@@ -12,8 +23,9 @@ class Contact:
                     break
             except TypeError:
                 print('Имя может состоять только из букв.')
+        self.number = False
 
-        while True:
+        while not self.number:
             try:
                 self.number = input('Введите номер: ')
                 if not self.number.isnumeric():
